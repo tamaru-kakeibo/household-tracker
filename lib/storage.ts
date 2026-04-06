@@ -77,7 +77,7 @@ export function loadDisabledTasks(): Set<string> {
 export function saveDisabledTasks(disabled: Set<string>): void {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem(DISABLED_KEY, JSON.stringify([...disabled]));
+    localStorage.setItem(DISABLED_KEY, JSON.stringify(Array.from(disabled)));
   } catch {
     // ignore
   }
