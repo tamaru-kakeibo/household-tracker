@@ -463,7 +463,7 @@ export default function Page() {
                   const tasks     = getActive(date, disabledTasks);
                   const doneCount = tasks.filter(t => completions[dateKey(date, t.id)]).length;
                   const allDone   = tasks.length > 0 && doneCount === tasks.length;
-                  const cats      = [...new Set(tasks.map(t => t.category))];
+                  const cats      = Array.from(new Set(tasks.map(t => t.category)));
                   const isTodayD   = sameDay(date, today);
                   const isSel      = sameDay(date, selected);
                   const beforeStart = startDate ? date < startDate : false;
