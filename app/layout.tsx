@@ -10,8 +10,8 @@ const noto = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: '家事カレンダー',
-  description: '毎日の家事メンテナンスをカレンダーで管理。1日30分〜1時間で貯まる家計へ。',
+  title: '掃除カレンダー',
+  description: '毎日の掃除をカレンダーで管理。1日30分〜1時間で家をきれいに保つ。',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

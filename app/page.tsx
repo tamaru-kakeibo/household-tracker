@@ -402,7 +402,7 @@ export default function Page() {
       <header className="bg-white border-b border-cream-300 sticky top-0 z-20">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
-            <h1 className="text-base font-medium text-warm-900 tracking-wide">家事カレンダー</h1>
+            <h1 className="text-base font-medium text-warm-900 tracking-wide">掃除カレンダー</h1>
             <p className="text-xs text-warm-700">毎日30分〜1時間で、無理なく続ける</p>
           </div>
           <div className="flex items-center gap-3">
