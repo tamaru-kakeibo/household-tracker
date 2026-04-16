@@ -124,6 +124,12 @@ export const TASKS: Record<string, Task> = {
     tip: 'フィルターを取り外して水で洗い流す。目詰まりがひどい場合は柔らかいブラシを使用。給湯器の説明書も確認を。',
   },
 
+  // Semi-annual — 4th Saturday of Jan/Jul
+  m6: {
+    id: 'm6', name: 'エコキュートの水抜き', category: 'machine', estimatedMinutes: 20,
+    tip: '貯湯タンク下の排水栓を開けて数分間水を流し、不純物を排出する。年2回（1月・7月）が目安。作業前に取扱説明書を確認し、高温に注意。',
+  },
+
   // Bedding — Weekly Sunday
   bd1: {
     id: 'bd1', name: 'シーツ・枕カバーの洗濯', category: 'living', estimatedMinutes: 15,

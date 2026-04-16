@@ -43,10 +43,11 @@ export function getTasksForDate(date: Date): Task[] {
     // 3rd Sat: 換気扇 + お風呂排水口
     if (isNthWeekday(date, 6, 3)) tasks.push(TASKS.k1, TASKS.b3);
 
-    // 4th Sat: 棚埃払い + 布団干し [+ 給湯器 quarterly]
+    // 4th Sat: 棚埃払い + 布団干し [+ 給湯器 quarterly] [+ エコキュート水抜き semi-annual]
     if (isNthWeekday(date, 6, 4)) {
       tasks.push(TASKS.l2, TASKS.bd2);
       if ([1, 4, 7, 10].includes(mon)) tasks.push(TASKS.m5); // Feb/May/Aug/Nov
+      if ([0, 6].includes(mon))        tasks.push(TASKS.m6); // Jan/Jul
     }
   }
 
