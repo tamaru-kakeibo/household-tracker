@@ -124,6 +124,30 @@ export const TASKS: Record<string, Task> = {
     tip: 'フィルターを取り外して水で洗い流す。目詰まりがひどい場合は柔らかいブラシを使用。給湯器の説明書も確認を。',
   },
 
+  // Bedding — Weekly Sunday
+  bd1: {
+    id: 'bd1', name: 'シーツ・枕カバーの洗濯', category: 'living', estimatedMinutes: 15,
+    tip: '枕カバーは皮脂・汗が直接付くため週1回が理想。シーツと一緒にまとめて洗うと効率的。',
+  },
+
+  // Bedding — Monthly 4th Saturday
+  bd2: {
+    id: 'bd2', name: '布団の天日干し', category: 'living', estimatedMinutes: 20,
+    tip: '晴れた日の10〜14時に干すのが最適。カバーをはずして両面各1〜2時間。取り込む前に軽くたたいてダニを落とす。',
+  },
+
+  // Bedding — Monthly 2nd Saturday
+  bd3: {
+    id: 'bd3', name: '毛布の洗濯', category: 'living', estimatedMinutes: 20,
+    tip: '洗濯表示を確認。大きい毛布はコインランドリーの大型機が便利。乾燥機OKの素材なら一緒に乾燥まで。',
+  },
+
+  // Bedding — Monthly 4th Sunday
+  bd4: {
+    id: 'bd4', name: 'マットレスの掃除機がけ・除菌', category: 'living', estimatedMinutes: 15,
+    tip: '掃除機でダニの死骸・皮脂を吸い取った後、除菌スプレーを軽く噴霧。3〜6ヶ月に1度は上下を入れ替えると長持ち。',
+  },
+
   // Semi-annual — 2nd Saturday of Apr/Oct（1階）
   l5a: {
     id: 'l5a', name: 'カーテンの洗濯（1階）', category: 'living', estimatedMinutes: 20,
