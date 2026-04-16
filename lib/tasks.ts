@@ -107,10 +107,15 @@ export const TASKS: Record<string, Task> = {
     tip: 'ゴムパッキンのカビには塩素系漂白剤を含ませたキッチンペーパーを30分貼り付けてから拭き取る。',
   },
 
-  // Quarterly — 2nd Saturday of Mar/Jun/Sep/Dec
-  l4: {
-    id: 'l4', name: '窓ガラス・サッシの掃除', category: 'living', estimatedMinutes: 45,
+  // Quarterly — 2nd Saturday of Mar/Jun/Sep/Dec（1階）
+  l4a: {
+    id: 'l4a', name: '窓ガラス・サッシの掃除（1階）', category: 'living', estimatedMinutes: 25,
     tip: '曇りの日が最適（晴れた日は乾きが早く拭き跡が残りやすい）。サッシの溝は古い歯ブラシで掃くと便利。',
+  },
+  // Quarterly — 2nd Sunday of Mar/Jun/Sep/Dec（2階）
+  l4b: {
+    id: 'l4b', name: '窓ガラス・サッシの掃除（2階）', category: 'living', estimatedMinutes: 30,
+    tip: '高い場所の窓は安全に注意。内側から拭いた後、外側も拭くと効果的。サッシの溝に詰まった汚れは歯ブラシで。',
   },
 
   // Quarterly — 4th Saturday of Feb/May/Aug/Nov
@@ -119,10 +124,15 @@ export const TASKS: Record<string, Task> = {
     tip: 'フィルターを取り外して水で洗い流す。目詰まりがひどい場合は柔らかいブラシを使用。給湯器の説明書も確認を。',
   },
 
-  // Semi-annual — 2nd Saturday of Apr/Oct
-  l5: {
-    id: 'l5', name: 'カーテンの洗濯', category: 'living', estimatedMinutes: 30,
+  // Semi-annual — 2nd Saturday of Apr/Oct（1階）
+  l5a: {
+    id: 'l5a', name: 'カーテンの洗濯（1階）', category: 'living', estimatedMinutes: 20,
     tip: '洗濯表示を必ず確認。乾燥機は避け、洗濯後はカーテンレールにかけたまま干すとシワになりにくい。',
+  },
+  // Semi-annual — 2nd Sunday of Apr/Oct（2階）
+  l5b: {
+    id: 'l5b', name: 'カーテンの洗濯（2階）', category: 'living', estimatedMinutes: 25,
+    tip: '2階は枚数が多いので洗濯機を複数回まわす場合も。洗い終わったものからすぐにレールに戻すと効率的。',
   },
 };
 

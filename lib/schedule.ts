@@ -32,11 +32,11 @@ export function getTasksForDate(date: Date): Task[] {
     // 1st Sat: 冷蔵庫 + お風呂排水口
     if (isNthWeekday(date, 6, 1)) tasks.push(TASKS.k4, TASKS.b3);
 
-    // 2nd Sat: 電子レンジ [+ 窓 quarterly] [+ カーテン semi-annual]
+    // 2nd Sat: 電子レンジ [+ 窓1F quarterly] [+ カーテン1F semi-annual]
     if (isNthWeekday(date, 6, 2)) {
       tasks.push(TASKS.k5);
-      if ([2, 5, 8, 11].includes(mon)) tasks.push(TASKS.l4); // Mar/Jun/Sep/Dec
-      if ([3, 9].includes(mon))        tasks.push(TASKS.l5); // Apr/Oct
+      if ([2, 5, 8, 11].includes(mon)) tasks.push(TASKS.l4a); // 1F窓 Mar/Jun/Sep/Dec
+      if ([3, 9].includes(mon))        tasks.push(TASKS.l5a); // 1Fカーテン Apr/Oct
     }
 
     // 3rd Sat: 換気扇 + お風呂排水口
@@ -52,7 +52,11 @@ export function getTasksForDate(date: Date): Task[] {
   // ── Sundays ──────────────────────────────────────────
   if (dow === 0) {
     if (isNthWeekday(date, 0, 1)) tasks.push(TASKS.b2);
-    if (isNthWeekday(date, 0, 2)) tasks.push(TASKS.m4);
+    if (isNthWeekday(date, 0, 2)) {
+      tasks.push(TASKS.m4);
+      if ([2, 5, 8, 11].includes(mon)) tasks.push(TASKS.l4b); // 2F窓 Mar/Jun/Sep/Dec
+      if ([3, 9].includes(mon))        tasks.push(TASKS.l5b); // 2Fカーテン Apr/Oct
+    }
     if (isNthWeekday(date, 0, 3)) tasks.push(TASKS.m2, TASKS.m3);
     if (isNthWeekday(date, 0, 4)) tasks.push(TASKS.m4);
   }
