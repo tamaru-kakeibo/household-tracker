@@ -30,43 +30,11 @@ const MONTH_JP = ['1月','2月','3月','4月','5月','6月','7月','8月','9月'
 const DOW_JP   = ['日','月','火','水','木','金','土'];
 const DOW_FULL = ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'];
 
-// ─── Overdue helpers ─────────────────────────────────────────────────────────
-
-interface OverdueItem {
-  task: Task;
-  scheduledDate: Date;
-  daysOverdue: number;
-}
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 /** Return tasks for a date, filtered by disabled set */
 function getActive(date: Date, disabled: Set<string>): Task[] {
   return getTasksForDate(date).filter(t => !disabled.has(t.id));
-}
-
-/** Look back up to 30 days (but not before startDate) and collect incomplete non-daily tasks */
-function computeOverdue(
-  today: Date,
-  completions: Record<string, boolean>,
-  startDate: Date | null,
-  disabled: Set<string>,
-): OverdueItem[] {
-  const result: OverdueItem[] = [];
-  const seenIds = new Set<string>();
-
-  for (let d = 1; d <= 30; d++) {
-    const past = new Date(today.getFullYear(), today.getMonth(), today.getDate() - d);
-    if (startDate && past < startDate) break;
-    for (const task of getActive(past, disabled)) {
-      if (task.id === 'b1') continue;
-      if (seenIds.has(task.id)) continue;
-      if (!completions[dateKey(past, task.id)]) {
-        seenIds.add(task.id);
-        result.push({ task, scheduledDate: past, daysOverdue: d });
-      }
-    }
-  }
-
-  return result.sort((a, b) => b.daysOverdue - a.daysOverdue);
 }
 
 // ─── Icons ───────────────────────────────────────────────────────────────────
@@ -102,12 +70,10 @@ function TaskRow({
   task,
   done,
   onToggle,
-  overdueLabel,
 }: {
   task: Task;
   done: boolean;
   onToggle: () => void;
-  overdueLabel?: string;
 }) {
   const cfg = CATEGORY_CONFIG[task.category];
   return (
@@ -116,7 +82,7 @@ function TaskRow({
       className={`w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-cream-50 transition-colors ${done ? 'opacity-55' : ''}`}
     >
       <div className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 transition-all duration-200
-        ${done ? 'bg-sage-400 border-sage-400' : overdueLabel ? 'border-amber-400' : 'border-blush-400'}`}>
+        ${done ? 'bg-sage-400 border-sage-400' : 'border-blush-400'}`}>
         {done && <CheckIcon className="w-3 h-3 text-white" />}
       </div>
       <div className="flex-1 min-w-0">
@@ -128,11 +94,6 @@ function TaskRow({
             {cfg.label}
           </span>
           <span className="text-xs text-warm-700">{task.estimatedMinutes}分</span>
-          {overdueLabel && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-medium">
-              {overdueLabel}
-            </span>
-          )}
         </div>
         {task.tip && (
           <p className="mt-1.5 text-xs text-warm-700 bg-cream-100 rounded-lg px-2.5 py-1.5">
@@ -149,31 +110,21 @@ function TaskRow({
 function DayPanel({
   date,
   tasks,
-  overdue,
   completions,
   memo,
   onToggle,
-  onToggleOverdue,
   onMemoChange,
 }: {
   date: Date;
   tasks: Task[];
-  overdue: OverdueItem[];
   completions: Record<string, boolean>;
   memo: string;
   onToggle: (id: string) => void;
-  onToggleOverdue: (taskId: string, scheduledDate: Date) => void;
   onMemoChange: (text: string) => void;
 }) {
-  const scheduledMin = getTotalMinutes(tasks);
-  const overdueMin   = getTotalMinutes(overdue.map(o => o.task));
-  const totalMin     = scheduledMin + overdueMin;
-
-  const scheduledDone = tasks.filter(t => completions[dateKey(date, t.id)]).length;
-  const overdueDone   = overdue.filter(o => completions[dateKey(o.scheduledDate, o.task.id)]).length;
-  const totalTasks    = tasks.length + overdue.length;
-  const totalDone     = scheduledDone + overdueDone;
-  const allDone       = totalTasks > 0 && totalDone === totalTasks;
+  const totalMin  = getTotalMinutes(tasks);
+  const totalDone = tasks.filter(t => completions[dateKey(date, t.id)]).length;
+  const allDone   = tasks.length > 0 && totalDone === tasks.length;
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-cream-300 overflow-hidden flex flex-col">
@@ -185,44 +136,21 @@ function DayPanel({
         <p className="text-white font-medium mt-0.5">
           {allDone
             ? 'すべて完了！お疲れさまでした'
-            : `${formatMinutes(totalMin)} ・ ${totalTasks}タスク`}
+            : `${formatMinutes(totalMin)} ・ ${tasks.length}タスク`}
         </p>
-        {totalTasks > 0 && (
+        {tasks.length > 0 && (
           <div className="mt-2 h-1 rounded-full bg-white/25">
             <div
               className="h-1 rounded-full bg-white transition-all duration-300"
-              style={{ width: `${(totalDone / totalTasks) * 100}%` }}
+              style={{ width: `${(totalDone / tasks.length) * 100}%` }}
             />
           </div>
         )}
       </div>
 
-      {/* Overdue section */}
-      {overdue.length > 0 && (
-        <div className="bg-amber-50 border-b border-amber-100">
-          <div className="flex items-center gap-1.5 px-4 pt-3 pb-1">
-            <WarnIcon className="w-4 h-4 text-amber-500 flex-shrink-0" />
-            <p className="text-xs font-medium text-amber-700">
-              持ち越しタスク — 早めに対応しましょう
-            </p>
-          </div>
-          <div className="divide-y divide-amber-100">
-            {overdue.map(o => (
-              <TaskRow
-                key={`overdue-${o.task.id}`}
-                task={o.task}
-                done={!!completions[dateKey(o.scheduledDate, o.task.id)]}
-                onToggle={() => onToggleOverdue(o.task.id, o.scheduledDate)}
-                overdueLabel={`${o.daysOverdue}日未完了`}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Scheduled task list */}
+      {/* Task list */}
       <div className="divide-y divide-cream-200 overflow-y-auto scrollbar-hide">
-        {tasks.length === 0 && overdue.length === 0 ? (
+        {tasks.length === 0 ? (
           <div className="p-10 text-center text-warm-700">
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-cream-100 flex items-center justify-center">
               <svg className="w-6 h-6 text-blush-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -324,14 +252,6 @@ export default function Page() {
   const grid          = useMemo(() => calendarGrid(viewY, viewM), [viewY, viewM]);
   const selectedTasks = useMemo(() => getActive(selected, disabledTasks), [selected, disabledTasks]);
 
-  // Overdue tasks — only shown when viewing today, respects startDate and disabled tasks
-  const overdueTasks = useMemo(
-    () => sameDay(selected, today)
-      ? computeOverdue(today, completions, startDate, disabledTasks)
-      : [],
-    [selected, today, completions, startDate, disabledTasks]
-  );
-
   // Monthly progress — exclude days before startDate, exclude disabled tasks
   const { monthTotal, monthDone } = useMemo(() => {
     let monthTotal = 0, monthDone = 0;
@@ -369,10 +289,6 @@ export default function Page() {
     applyToggle(dateKey(selected, taskId));
   }
 
-  function toggleOverdue(taskId: string, scheduledDate: Date) {
-    applyToggle(dateKey(scheduledDate, taskId));
-  }
-
   function selectDate(d: Date) {
     setSelected(d);
     setPanelOpen(true);
@@ -387,11 +303,9 @@ export default function Page() {
   const sharedPanelProps = {
     date: selected,
     tasks: selectedTasks,
-    overdue: overdueTasks,
     completions,
     memo: memos[memoDateKey(selected)] ?? '',
     onToggle: toggleTask,
-    onToggleOverdue: toggleOverdue,
     onMemoChange: handleMemoChange,
   };
 
@@ -403,7 +317,7 @@ export default function Page() {
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
             <h1 className="text-base font-medium text-warm-900 tracking-wide">掃除カレンダー</h1>
-            <p className="text-xs text-warm-700">毎日30分〜1時間で、無理なく続ける</p>
+            <p className="text-xs text-warm-700">できた日を積み重ねる、やさしい掃除カレンダー</p>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -579,7 +493,7 @@ export default function Page() {
             <div className="overflow-y-auto scrollbar-hide px-6 flex-1">
               {/* Start date */}
               <p className="text-xs font-medium text-warm-700 mb-1.5">使い始めの日</p>
-              <p className="text-xs text-warm-700/70 mb-2">この日より前は未完了・持ち越しの対象外になります</p>
+              <p className="text-xs text-warm-700/70 mb-2">この日より前の進捗は集計されません</p>
               <input
                 type="date"
                 value={startDateInput}
