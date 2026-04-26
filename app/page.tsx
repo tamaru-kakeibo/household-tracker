@@ -324,13 +324,8 @@ export default function Page() {
       <header className="bg-white border-b border-cream-300 sticky top-0 z-20">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
-<<<<<<< HEAD
-            <h1 className="text-base font-medium text-warm-900 tracking-wide">掃除カレンダー</h1>
-            <p className="text-xs text-warm-700">できた日を積み重ねる、やさしい掃除カレンダー</p>
-=======
             <h1 className="text-base font-medium text-warm-900 tracking-wide">サボる掃除カレンダー</h1>
-            <p className="text-xs text-warm-700">毎日30分〜1時間で、無理なく続ける</p>
->>>>>>> 33c3c40 (サボる掃除カレンダーに名前変更・ねぎらいメッセージを5種類に更新)
+            <p className="text-xs text-warm-700">完璧じゃなくていい、今日の分だけやればOK</p>
           </div>
           <div className="flex items-center gap-3">
             <button
