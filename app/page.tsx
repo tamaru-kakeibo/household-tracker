@@ -28,6 +28,14 @@ function calendarGrid(y: number, m: number): (Date | null)[] {
 
 const MONTH_JP = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 const DOW_JP   = ['日','月','火','水','木','金','土'];
+
+const DONE_MESSAGES = [
+  'お疲れさまでした！今日の掃除をやったあなたは100点満点！',
+  'お疲れさまでした！ご褒美にスイーツを食べてもいいでしょう！',
+  'お疲れさまでした！完璧じゃなくて良い！あなたはやった！',
+  'お疲れさまでした！今日のノルマは完了です！エライ！',
+  'お疲れさまでした！名もなき家事をやる主婦は天才だ！',
+];
 const DOW_FULL = ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -135,7 +143,7 @@ function DayPanel({
         </p>
         <p className="text-white font-medium mt-0.5">
           {allDone
-            ? 'すべて完了！お疲れさまでした'
+            ? DONE_MESSAGES[date.getDate() % DONE_MESSAGES.length]
             : `${formatMinutes(totalMin)} ・ ${tasks.length}タスク`}
         </p>
         {tasks.length > 0 && (
@@ -316,8 +324,13 @@ export default function Page() {
       <header className="bg-white border-b border-cream-300 sticky top-0 z-20">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
+<<<<<<< HEAD
             <h1 className="text-base font-medium text-warm-900 tracking-wide">掃除カレンダー</h1>
             <p className="text-xs text-warm-700">できた日を積み重ねる、やさしい掃除カレンダー</p>
+=======
+            <h1 className="text-base font-medium text-warm-900 tracking-wide">サボる掃除カレンダー</h1>
+            <p className="text-xs text-warm-700">毎日30分〜1時間で、無理なく続ける</p>
+>>>>>>> 33c3c40 (サボる掃除カレンダーに名前変更・ねぎらいメッセージを5種類に更新)
           </div>
           <div className="flex items-center gap-3">
             <button
